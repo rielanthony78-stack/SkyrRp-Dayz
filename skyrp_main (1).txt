@@ -1,0 +1,448 @@
+// ============================================
+// SKYROLEPLAY DAYZ - SYSTÈME COMPLET
+// Version: 1.0.0
+// Platform: Console (Xbox/PlayStation)
+// ============================================
+
+// === CONFIGURATION SERVEUR ===
+class SkyRP_ServerConfig {
+    // Informations de base
+    string serverName = "SkyRP | Roleplay FR | Whitelist";
+    string serverPassword = "";
+    int maxPlayers = 60;
+    string mapName = "ChernarusPlus";
+    
+    // Mode Roleplay
+    bool roleplayMode = true;
+    bool whitelistEnabled = true;
+    bool voiceProximity = true;
+    float voiceRange = 30.0; // mètres
+    
+    // Règles PvP
+    bool pvpEnabled = false; // PvP désactivé par défaut en RP
+    array<string> pvpZones = {
+        "Zone Militaire Nord",
+        "Aéroport International",
+        "Prison Island"
+    };
+    
+    // Temps et météo
+    float timeAcceleration = 6.0; // 1 jour = 4 heures réelles
+    bool dynamicWeather = true;
+    int startTime = 0800; // Heure de démarrage
+}
+
+// === SYSTÈME DE MÉTIERS ===
+class SkyRP_Jobs {
+    class Job {
+        string name;
+        string description;
+        int salary;
+        array<string> equipment;
+        array<string> permissions;
+    }
+    
+    array<ref Job> availableJobs = {
+        {
+            name = "Policier",
+            description = "Maintenir l'ordre et la sécurité",
+            salary = 5000,
+            equipment = {"Police_Uniform", "Glock19", "Handcuffs", "Radio"},
+            permissions = {"arrest", "search", "fine"}
+        },
+        {
+            name = "Médecin",
+            description = "Soigner les blessés et sauver des vies",
+            salary = 4500,
+            equipment = {"Medical_Uniform", "FirstAidKit", "Morphine", "Bandage"},
+            permissions = {"heal", "revive", "transport_medical"}
+        },
+        {
+            name = "Mécanicien",
+            description = "Réparer et entretenir les véhicules",
+            salary = 3500,
+            equipment = {"Mechanic_Outfit", "ToolKit", "TireRepairKit", "EngineOil"},
+            permissions = {"repair", "modify", "tow"}
+        },
+        {
+            name = "Fermier",
+            description = "Cultiver et vendre des produits agricoles",
+            salary = 3000,
+            equipment = {"Farmer_Clothes", "Shovel", "Seeds", "WateringCan"},
+            permissions = {"farm", "sell_produce", "animal_care"}
+        },
+        {
+            name = "Commerçant",
+            description = "Gérer un magasin et vendre des biens",
+            salary = 3500,
+            equipment = {"Business_Suit", "Calculator", "Ledger"},
+            permissions = {"trade", "set_prices", "manage_shop"}
+        },
+        {
+            name = "Chasseur",
+            description = "Chasser et vendre de la viande",
+            salary = 2500,
+            equipment = {"Hunter_Outfit", "CR527", "HuntingKnife", "AnimalBait"},
+            permissions = {"hunt", "skin_animals", "sell_meat"}
+        }
+    };
+}
+
+// === SYSTÈME D'ÉCONOMIE ===
+class SkyRP_Economy {
+    int startingMoney = 10000;
+    string currencyName = "Euros";
+    
+    // Prix de base
+    class Prices {
+        // Nourriture
+        int bread = 50;
+        int water = 30;
+        int cannedFood = 100;
+        int cookedMeat = 200;
+        
+        // Médicaments
+        int bandage = 150;
+        int morphine = 500;
+        int antibiotics = 750;
+        int bloodBag = 1000;
+        
+        // Équipement
+        int backpack = 2000;
+        int clothingSet = 1500;
+        int toolkit = 3000;
+        
+        // Armes (si autorisé)
+        int pistol = 15000;
+        int rifle = 25000;
+        int ammoBox = 500;
+        
+        // Véhicules
+        int bicycle = 5000;
+        int motorcycle = 25000;
+        int car = 50000;
+        int truck = 75000;
+        int helicopter = 250000;
+    }
+    
+    // Système de taxes
+    float incomeTax = 0.15;
+    float salesTax = 0.10;
+    float propertyTax = 0.05;
+}
+
+// === ZONES SAFE ===
+class SkyRP_SafeZones {
+    array<ref SafeZone> zones = {
+        {
+            name = "Centre-ville Chernogorsk",
+            center = {6500.0, 0.0, 2500.0},
+            radius = 500.0,
+            noPvP = true,
+            noRaid = true,
+            tradingAllowed = true
+        },
+        {
+            name = "Hôpital Elektrozavodsk",
+            center = {10500.0, 0.0, 2300.0},
+            radius = 200.0,
+            noPvP = true,
+            noRaid = true,
+            medicalZone = true
+        },
+        {
+            name = "Marché de Berezino",
+            center = {12000.0, 0.0, 9000.0},
+            radius = 300.0,
+            noPvP = true,
+            tradingAllowed = true
+        }
+    };
+}
+
+// === SYSTÈME DE PROPRIÉTÉS ===
+class SkyRP_Properties {
+    class Property {
+        string id;
+        string type; // "house", "apartment", "warehouse", "shop"
+        vector position;
+        int price;
+        int maxStorage;
+        bool forSale;
+        string owner;
+    }
+    
+    array<ref Property> availableProperties = {
+        {
+            id = "HOUSE_001",
+            type = "house",
+            position = {6523.0, 0.0, 2645.0},
+            price = 50000,
+            maxStorage = 500,
+            forSale = true,
+            owner = ""
+        },
+        {
+            id = "SHOP_001",
+            type = "shop",
+            position = {6789.0, 0.0, 2890.0},
+            price = 100000,
+            maxStorage = 1000,
+            forSale = true,
+            owner = ""
+        },
+        {
+            id = "WAREHOUSE_001",
+            type = "warehouse",
+            position = {10234.0, 0.0, 2156.0},
+            price = 150000,
+            maxStorage = 2000,
+            forSale = true,
+            owner = ""
+        }
+    };
+}
+
+// === SYSTÈME DE FACTIONS ===
+class SkyRP_Factions {
+    class Faction {
+        string name;
+        string description;
+        string leader;
+        array<string> members;
+        int reputation;
+        int treasury;
+        vector headquarters;
+    }
+    
+    array<ref Faction> factions = {
+        {
+            name = "Police de Chernarus",
+            description = "Forces de l'ordre officielles",
+            leader = "",
+            members = {},
+            reputation = 100,
+            treasury = 500000,
+            headquarters = {6500.0, 0.0, 2600.0}
+        },
+        {
+            name = "Services Médicaux",
+            description = "Organisation médicale d'urgence",
+            leader = "",
+            members = {},
+            reputation = 100,
+            treasury = 300000,
+            headquarters = {10500.0, 0.0, 2300.0}
+        },
+        {
+            name = "Syndicat des Commerçants",
+            description = "Association des marchands",
+            leader = "",
+            members = {},
+            reputation = 75,
+            treasury = 750000,
+            headquarters = {12000.0, 0.0, 9000.0}
+        }
+    };
+}
+
+// === RÈGLES DU SERVEUR ===
+class SkyRP_Rules {
+    array<string> generalRules = {
+        "1. Le Roleplay est obligatoire en permanence",
+        "2. Pas de Metagaming (utiliser des infos hors-jeu)",
+        "3. Pas de Powergaming (forcer des actions sur les autres)",
+        "4. Pas de RDM (Random Death Match)",
+        "5. Pas de VDM (Vehicle Death Match)",
+        "6. Le New Life Rule s'applique (oublier sa mort précédente)",
+        "7. Respecter les zones safe",
+        "8. La communication vocale est obligatoire pour le RP",
+        "9. Les déconnexions en combat sont interdites",
+        "10. Le respect entre joueurs est primordial"
+    };
+    
+    array<string> rpRules = {
+        "1. Avoir un nom RP réaliste",
+        "2. Créer une histoire de personnage cohérente",
+        "3. Rester dans son personnage (In Character)",
+        "4. Les actions HRP (Hors Roleplay) sont interdites",
+        "5. La Fear RP doit être respectée (peur réaliste)",
+        "6. La Pain RP doit être jouée (douleur réaliste)",
+        "7. Les scènes de torture nécessitent le consentement OOC",
+        "8. Le RP sexuel est strictement interdit",
+        "9. Les insultes racistes/homophobes sont bannies",
+        "10. Le fairplay est encouragé"
+    };
+}
+
+// === SYSTÈME DE VÉHICULES ===
+class SkyRP_Vehicles {
+    class VehicleSpawn {
+        string vehicleType;
+        vector position;
+        float rotation;
+        bool locked;
+        string owner;
+        int fuel;
+        int condition;
+    }
+    
+    array<ref VehicleSpawn> vehicleSpawns = {
+        // Spawns publics
+        {
+            vehicleType = "OffroadHatchback",
+            position = {6550.0, 0.0, 2550.0},
+            rotation = 45.0,
+            locked = false,
+            owner = "PUBLIC",
+            fuel = 50,
+            condition = 75
+        },
+        {
+            vehicleType = "CivilianSedan",
+            position = {10600.0, 0.0, 2400.0},
+            rotation = 180.0,
+            locked = false,
+            owner = "PUBLIC",
+            fuel = 30,
+            condition = 60
+        },
+        // Véhicules de faction
+        {
+            vehicleType = "Police_Car",
+            position = {6500.0, 0.0, 2650.0},
+            rotation = 90.0,
+            locked = true,
+            owner = "POLICE",
+            fuel = 100,
+            condition = 100
+        },
+        {
+            vehicleType = "Ambulance",
+            position = {10550.0, 0.0, 2350.0},
+            rotation = 270.0,
+            locked = true,
+            owner = "MEDICAL",
+            fuel = 100,
+            condition = 100
+        }
+    };
+}
+
+// === SYSTÈME D'ÉVÉNEMENTS ===
+class SkyRP_Events {
+    class Event {
+        string name;
+        string description;
+        int startTime;
+        int duration; // en minutes
+        vector location;
+        int maxParticipants;
+        array<string> rewards;
+    }
+    
+    array<ref Event> scheduledEvents = {
+        {
+            name = "Marché Hebdomadaire",
+            description = "Grand marché avec prix réduits",
+            startTime = 1900, // 19h00
+            duration = 120,
+            location = {12000.0, 0.0, 9000.0},
+            maxParticipants = 100,
+            rewards = {"10% de réduction", "Items rares"}
+        },
+        {
+            name = "Course de Véhicules",
+            description = "Course à travers Chernarus",
+            startTime = 2100,
+            duration = 60,
+            location = {6500.0, 0.0, 2500.0},
+            maxParticipants = 20,
+            rewards = {"50000 Euros", "Véhicule custom"}
+        },
+        {
+            name = "Chasse au Trésor",
+            description = "Trouvez le trésor caché",
+            startTime = 1500,
+            duration = 180,
+            location = {0.0, 0.0, 0.0}, // Random
+            maxParticipants = 50,
+            rewards = {"100000 Euros", "Équipement rare"}
+        }
+    };
+}
+
+// === SYSTÈME DE WHITELIST ===
+class SkyRP_Whitelist {
+    array<ref WhitelistEntry> whitelist = {
+        // Format: SteamID/GamerTag, Nom RP, Niveau d'accès
+        // Ajoutez les joueurs ici
+    };
+    
+    class WhitelistEntry {
+        string playerID;
+        string rpName;
+        int accessLevel; // 0=Joueur, 1=VIP, 2=Modo, 3=Admin
+        bool isActive;
+        string discordID;
+    }
+}
+
+// === COMMANDES ADMIN ===
+class SkyRP_AdminCommands {
+    // Commandes disponibles
+    array<string> commands = {
+        "/tp [joueur] - Téléporter vers un joueur",
+        "/bring [joueur] - Amener un joueur à vous",
+        "/kick [joueur] [raison] - Expulser un joueur",
+        "/ban [joueur] [durée] [raison] - Bannir un joueur",
+        "/give [joueur] [item] [quantité] - Donner un item",
+        "/money [joueur] [montant] - Donner de l'argent",
+        "/heal [joueur] - Soigner un joueur",
+        "/revive [joueur] - Réanimer un joueur",
+        "/spawn [véhicule] - Faire apparaître un véhicule",
+        "/weather [type] - Changer la météo",
+        "/time [heure] - Changer l'heure",
+        "/announce [message] - Annonce serveur",
+        "/invisible - Devenir invisible",
+        "/god - Mode invincible",
+        "/spectate [joueur] - Observer un joueur"
+    };
+}
+
+// === INITIALISATION ===
+void SkyRP_Init() {
+    Print("[SkyRP] Initialisation du système de roleplay...");
+    
+    // Charger la configuration
+    SkyRP_ServerConfig config = new SkyRP_ServerConfig();
+    
+    // Initialiser l'économie
+    SkyRP_Economy economy = new SkyRP_Economy();
+    
+    // Charger les zones safe
+    SkyRP_SafeZones safezones = new SkyRP_SafeZones();
+    
+    // Initialiser les métiers
+    SkyRP_Jobs jobs = new SkyRP_Jobs();
+    
+    // Charger les propriétés
+    SkyRP_Properties properties = new SkyRP_Properties();
+    
+    // Initialiser les factions
+    SkyRP_Factions factions = new SkyRP_Factions();
+    
+    // Charger les véhicules
+    SkyRP_Vehicles vehicles = new SkyRP_Vehicles();
+    
+    // Planifier les événements
+    SkyRP_Events events = new SkyRP_Events();
+    
+    Print("[SkyRP] Système initialisé avec succès!");
+    Print("[SkyRP] Serveur: " + config.serverName);
+    Print("[SkyRP] Joueurs max: " + config.maxPlayers);
+    Print("[SkyRP] Mode Whitelist: " + config.whitelistEnabled);
+}
+
+// Lancer l'initialisation au démarrage
+SkyRP_Init();
